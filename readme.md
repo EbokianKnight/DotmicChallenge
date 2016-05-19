@@ -20,7 +20,7 @@ attention to detail and affinity for standards based development.
 - [x] paginate the query by tens
 - [x] provide a load more button to load another page
 - [x] if the original query is deleted, ajax another call to more-articles.json
-- [x] enable table sorting by **words** and **submitted** cols, cache settings
+- [x] enable table sorting by **words** and **submitted** columns.
 - [x] provide a similar to provided UI that is clear and functional
 - [x] enable local storage to store sorting variables during refresh.
 
