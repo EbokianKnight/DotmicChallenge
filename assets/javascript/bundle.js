@@ -8103,15 +8103,15 @@
 	
 	var _reactDom = __webpack_require__(331);
 	
-	var _app = __webpack_require__(466);
+	var _main = __webpack_require__(553);
 	
-	var _app2 = _interopRequireDefault(_app);
+	var _main2 = _interopRequireDefault(_main);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// When the DOM renders, fire off the app logic
 	document.addEventListener('DOMContentLoaded', function () {
-	  (0, _reactDom.render)(_react2.default.createElement(_app2.default, null), document.getElementById('root'));
+	  (0, _reactDom.render)(_react2.default.createElement(_main2.default, null), document.getElementById('root'));
 	});
 
 /***/ },
@@ -28106,65 +28106,7 @@
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 466 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _getPrototypeOf = __webpack_require__(467);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(493);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(494);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(498);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(545);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(300);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var App = function (_React$Component) {
-	  (0, _inherits3.default)(App, _React$Component);
-	
-	  function App(props) {
-	    (0, _classCallCheck3.default)(this, App);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(App).call(this, props));
-	
-	    _this.state = {};
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(App, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'APP LOADED'
-	      );
-	    }
-	  }]);
-	  return App;
-	}(_react2.default.Component);
-	
-	module.exports = App;
-
-/***/ },
+/* 466 */,
 /* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -29691,6 +29633,65 @@
 	var $export = __webpack_require__(479)
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 	$export($export.S, 'Object', {create: __webpack_require__(510)});
+
+/***/ },
+/* 553 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _getPrototypeOf = __webpack_require__(467);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(493);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(494);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(498);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(545);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _react = __webpack_require__(300);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Main = function (_React$Component) {
+	  (0, _inherits3.default)(Main, _React$Component);
+	
+	  function Main(props) {
+	    (0, _classCallCheck3.default)(this, Main);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Main).call(this, props));
+	
+	    _this.state = {};
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Main, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'APP LOADED'
+	      );
+	    }
+	  }]);
+	  return Main;
+	}(_react2.default.Component);
+	
+	module.exports = Main;
 
 /***/ }
 /******/ ]);
