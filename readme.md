@@ -10,9 +10,10 @@ attention to detail and affinity for standards based development.
 
 ###Launch Instructions
 * StepOne. Download and Navigate into the dotmic_challenge directory.
-* StepTwo. "npm install -g http-server" (if you don't have it already)
-* StepThree. "npm run start"
-* StepFour. <a href="http://localhost:8080/src/index.html">Click Here</a>
+* StepTwo. "npm install"
+* StepThree. "npm install -g http-server" (if you don't have it already)
+* StepFour. "npm run start"
+* StepFive. <a href="http://localhost:8080/src/index.html">Click Here</a>
 
 ###Needs
 [x] populate the page with data from articles.json
