@@ -22,12 +22,6 @@ export function getNextPage() {
   });
 }
 
-export function sortByAuthor() {
-  Dispatcher.dispatch({
-    actionType: ArticleActions.AUTHORSORTED,
-  });
-}
-
 export function sortByCount() {
   Dispatcher.dispatch({
     actionType: ArticleActions.COUNTSORTED,
