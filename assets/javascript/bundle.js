@@ -29638,7 +29638,7 @@
 /* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _getPrototypeOf = __webpack_require__(467);
 	
@@ -29679,17 +29679,94 @@
 	  }
 	
 	  (0, _createClass3.default)(Main, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
+	        "div",
 	        null,
-	        'APP LOADED'
+	        _react2.default.createElement(
+	          "header",
+	          { className: "header-container" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "left-header" },
+	            _react2.default.createElement(
+	              "p",
+	              null,
+	              "Unpublished Articles (66)"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "right-header" },
+	            _react2.default.createElement(
+	              "p",
+	              null,
+	              "Author"
+	            ),
+	            _react2.default.createElement(
+	              "p",
+	              null,
+	              "Words"
+	            ),
+	            _react2.default.createElement(
+	              "p",
+	              null,
+	              "Submitted"
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "row-container" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "row-col-1" },
+	            _react2.default.createElement("div", { className: "icon" }),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "row-article-title" },
+	              "Ipsum Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor"
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "bootcamp" },
+	              "Bootcamp"
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "a",
+	            { href: "#", className: "row-article-author" },
+	            "Medha Chandorkar"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            { className: "row-article-wordcount" },
+	            "433"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            { className: "row-article-submital" },
+	            "6 minutes ago"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "footer",
+	          { className: "footer-container" },
+	          _react2.default.createElement(
+	            "button",
+	            { className: "row-load-btn" },
+	            "Load More"
+	          )
+	        )
 	      );
 	    }
 	  }]);
 	  return Main;
 	}(_react2.default.Component);
+	
+	Main.propTypes = { articles: _react2.default.PropTypes.array };
+	Main.defaultProps = { articles: [] };
 	
 	module.exports = Main;
 

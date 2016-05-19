@@ -14,4 +14,5 @@ This is the UI/UX developer competency test designed to gauge skill, attention t
 * Main.jsx to store the state and store references
 * RowContainer.jsx to be passed state prop and format data for each row
 * Row.js function displays html/css for each row
-* Header.jsx
+* Header.jsx serves as the header
+* Footer.jsx serves as the button for loading
