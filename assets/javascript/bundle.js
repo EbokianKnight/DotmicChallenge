@@ -28147,6 +28147,8 @@
 	
 	var _article_store2 = _interopRequireDefault(_article_store);
 	
+	var _article_actions = __webpack_require__(576);
+	
 	var _row_container = __webpack_require__(579);
 	
 	var _row_container2 = _interopRequireDefault(_row_container);
@@ -28165,11 +28167,12 @@
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Main).call(this, props));
 	
-	    _this.state = { articles: _article_store2.default.provideArticles() };
-	    _this.renderArticles = _this.renderArticles.bind(_this);
-	    _this.getStateFromStore = function () {
-	      _this.setState({ articles: _article_store2.default.provideArticles() });
+	    _this.state = {
+	      articles: _article_store2.default.provideArticles(),
+	      complete: _article_store2.default.noMoreResults()
 	    };
+	    _this.renderArticles = _this.renderArticles.bind(_this);
+	    _this.getStateFromStore = _this.getStateFromStore.bind(_this);
 	    return _this;
 	  }
 	
@@ -28177,6 +28180,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.token = _article_store2.default.addListener(this.getStateFromStore);
+	      (0, _article_actions.getNextPage)();
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -28184,11 +28188,16 @@
 	      this.token.remove();
 	    }
 	  }, {
+	    key: 'getStateFromStore',
+	    value: function getStateFromStore() {
+	      this.setState({
+	        articles: _article_store2.default.provideArticles(),
+	        complete: _article_store2.default.noMoreResults()
+	      });
+	    }
+	  }, {
 	    key: 'renderArticles',
 	    value: function renderArticles() {
-	      /*eslint-disable */
-	      console.log(this.state);
-	      /*eslint-enable */
 	      return this.state.articles.map(function (row) {
 	        return _react2.default.createElement(_row_container2.default, { key: row.id, article: row });
 	      });
@@ -28205,15 +28214,21 @@
 	          { className: 'row-index-wrapper' },
 	          this.renderArticles()
 	        ),
-	        _react2.default.createElement(_footer2.default, null)
+	        _react2.default.createElement(_footer2.default, { complete: this.state.complete })
 	      );
 	    }
 	  }]);
 	  return Main;
 	}(_react2.default.Component);
 	
-	Main.PropTypes = { articles: _react2.default.PropTypes.array };
-	Main.defaultProps = { articles: [] };
+	Main.PropTypes = {
+	  articles: _react2.default.PropTypes.array,
+	  complete: _react2.default.PropTypes.boolean
+	};
+	Main.defaultProps = {
+	  articles: [],
+	  complete: false
+	};
 	
 	exports.default = Main;
 
@@ -29815,16 +29830,14 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var count = 'sub-row header';
+	      var count = 'sub-row header btn';
 	      var author = 'sub-row header';
-	      var date = 'sub-row header';
+	      var date = 'sub-row header btn';
 	      var order = _article_store2.default.getOrder();
 	      if (this.state.sortBy === 'count') {
-	        count = 'sub-row header ' + order;
-	      } else if (this.state.sortBy === 'author') {
-	        author = 'sub-row header ' + order;
+	        count = 'sub-row header btn ' + order;
 	      } else if (this.state.sortBy === 'date') {
-	        date = 'sub-row header ' + order;
+	        date = 'sub-row header btn ' + order;
 	      }
 	      return _react2.default.createElement(
 	        'div',
@@ -29834,7 +29847,7 @@
 	          { className: 'header-container' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'main-row', onClick: _article_actions.sortByDefault },
+	            { className: 'main-row btn', onClick: _article_actions.sortByDefault },
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -29847,8 +29860,8 @@
 	            'div',
 	            { className: 'sub-row-index' },
 	            _react2.default.createElement(
-	              'button',
-	              { className: author, onClick: _article_actions.sortByAuthor },
+	              'p',
+	              { className: author },
 	              'Author'
 	            ),
 	            _react2.default.createElement(
@@ -29869,7 +29882,7 @@
 	  return Header;
 	}(_react2.default.Component);
 	
-	Header.PropTypes = { sortBy: _react2.default.PropTypes.string };
+	Header.propTypes = { sortBy: _react2.default.PropTypes.string };
 	Header.defaultProps = { sortBy: 'none' };
 	
 	exports.default = Header;
@@ -29894,31 +29907,28 @@
 	
 	var _api_util = __webpack_require__(577);
 	
+	var _sort_articles = __webpack_require__(578);
+	
+	var _sort_articles2 = _interopRequireDefault(_sort_articles);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// import { sortArticles } from '../utils/sort_articles';
 	var ArticleStore = new _utils.Store(_dispatcher2.default);
 	
-	var lastSortedBy = 'none';
+	var lastSortedBy = window.sessionStorage.getItem('lastSortedBy') || 'none';
 	var articleList = [];
 	var shownArticles = [];
 	var pageNumber = 0;
-	var orderBy = 'up';
-	var sorted = true;
+	var orderBy = window.sessionStorage.getItem('orderBy') || 'up';
+	var sorted = false;
+	var moreResults = true;
 	
 	/*eslint-disable */
+	console.log(window.sessionStorage.getItem('lastSortedBy'));
+	console.log(window.sessionStorage.getItem('orderBy'));
+	
 	ArticleStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case _article_actions.ArticleActions.AUTHORSORTED:
-	      sorted = false;
-	      if (lastSortedBy !== 'author') {
-	        lastSortedBy = 'author';
-	        orderBy = 'up';
-	      } else {
-	        toggleOrder();
-	      }
-	      ArticleStore.__emitChange();
-	      break;
 	    case _article_actions.ArticleActions.DATESORTED:
 	      sorted = false;
 	      if (lastSortedBy !== 'date') {
@@ -29944,8 +29954,6 @@
 	      if (lastSortedBy !== 'none') {
 	        lastSortedBy = 'none';
 	        orderBy = 'up';
-	      } else {
-	        toggleOrder();
 	      }
 	      ArticleStore.__emitChange();
 	      break;
@@ -29960,13 +29968,17 @@
 	      ArticleStore.__emitChange();
 	      break;
 	  }
+	  window.sessionStorage.setItem('lastSortedBy', lastSortedBy);
+	  window.sessionStorage.setItem('orderBy', orderBy);
 	};
+	/*eslint-enable */
 	
 	function toggleOrder() {
 	  orderBy = orderBy === 'up' ? 'down' : 'up';
 	}
 	
 	// this loads the next ten ads into shownArticles
+	// the hard cap of 60 here should be generated dynamically based on backend info
 	function showTenMoreArticles() {
 	  var total = articleList.length;
 	  var next = 10 * pageNumber;
@@ -29979,12 +29991,21 @@
 	  } else if (total > 0 && total < 60) {
 	    (0, _api_util.loadJSON)('../src/dbfaker/more-articles.json');
 	  }
+	  if (shownArticles.length >= 60) {
+	    moreResults = false;
+	  }
 	}
 	
 	// this loads all of the json into a storage variable
 	function cacheArticles(articles) {
 	  articleList = articleList.concat(articles);
+	  showTenMoreArticles();
 	}
+	
+	// used to determine if the LoadMore button should be active
+	ArticleStore.noMoreResults = function noMoreResults() {
+	  return !moreResults;
+	};
 	
 	// return the total number of shown articles
 	ArticleStore.getTotal = function getTotal() {
@@ -30003,15 +30024,20 @@
 	// if there are articles loaded, return a sorted version
 	ArticleStore.provideArticles = function provideArticles() {
 	  if (sorted) return shownArticles;
-	  // sorted = true;
-	  // console.log(sortArticles);
-	  // console.log(sortArticles(shownArticles, orderBy, lastSortedBy));
-	  // return sortArticles(shownArticles, orderBy, lastSortedBy);
-	  return shownArticles;
+	  sorted = true;
+	  var sortBy = void 0;
+	  if (lastSortedBy === 'count') {
+	    sortBy = 'words';
+	  } else if (lastSortedBy === 'date') {
+	    sortBy = 'publish_at';
+	  } else {
+	    sortBy = 'id';
+	  }
+	  sortBy = orderBy === 'up' ? '-'.concat(sortBy) : sortBy;
+	  return (0, _sort_articles2.default)(shownArticles, sortBy);
 	};
 	
 	exports.default = ArticleStore;
-	/*eslint-enable */
 
 /***/ },
 /* 555 */
@@ -36790,7 +36816,6 @@
 	exports.ArticleActions = undefined;
 	exports.loadMoreArticles = loadMoreArticles;
 	exports.getNextPage = getNextPage;
-	exports.sortByAuthor = sortByAuthor;
 	exports.sortByCount = sortByCount;
 	exports.sortByDate = sortByDate;
 	exports.sortByDefault = sortByDefault;
@@ -36820,12 +36845,6 @@
 	function getNextPage() {
 	  _dispatcher2.default.dispatch({
 	    actionType: ArticleActions.PAGINATE
-	  });
-	}
-	
-	function sortByAuthor() {
-	  _dispatcher2.default.dispatch({
-	    actionType: ArticleActions.AUTHORSORTED
 	  });
 	}
 	
@@ -36880,7 +36899,39 @@
 	}
 
 /***/ },
-/* 578 */,
+/* 578 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = sortArticles;
+	function customSort(property) {
+	  var sortOrder = 1;
+	  var theProperty = property;
+	  if (property[0] === '-') {
+	    sortOrder = -1;
+	    theProperty = property.slice(1);
+	  }
+	  return function compare(a, b) {
+	    var result = 0;
+	    if (a[theProperty] < b[theProperty]) {
+	      result = -1;
+	    } else if (a[theProperty] > b[theProperty]) {
+	      result = 1;
+	    }
+	    return result * sortOrder;
+	  };
+	}
+	
+	function sortArticles(articles, sortBy) {
+	  articles.sort(customSort(sortBy));
+	  return articles;
+	}
+
+/***/ },
 /* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -36909,8 +36960,8 @@
 	  return first + ' ' + last;
 	}
 	
-	function RowContainer() {
-	  var art = this.props.article;
+	function RowContainer(props) {
+	  var art = props.article;
 	  if (art.length === 0) return _react2.default.createElement('div', null);
 	  return _react2.default.createElement(_row2.default, {
 	    img: art.image,
@@ -36923,7 +36974,7 @@
 	  });
 	}
 	
-	RowContainer.PropTypes = { article: _react2.default.PropTypes.object };
+	RowContainer.propTypes = { article: _react2.default.PropTypes.object };
 	RowContainer.defaultProps = { article: {} };
 
 /***/ },
@@ -36943,23 +36994,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function Row() {
+	function Row(props) {
 	  return _react2.default.createElement(
 	    "div",
-	    { className: "row-container" },
+	    { className: "expand row-container" },
 	    _react2.default.createElement(
 	      "div",
 	      { className: "main-row" },
-	      _react2.default.createElement("img", { alt: this.props.img, className: "icon" }),
+	      _react2.default.createElement("img", { src: props.img, alt: props.img, className: "icon" }),
 	      _react2.default.createElement(
 	        "a",
-	        { href: this.props.url, className: "row-article-title" },
-	        this.props.title
+	        { href: props.url, className: "row-article-title" },
+	        props.title
 	      ),
 	      _react2.default.createElement(
 	        "div",
 	        { className: "bootcamp" },
-	        this.props.stamp
+	        props.stamp
 	      )
 	    ),
 	    _react2.default.createElement(
@@ -36968,29 +37019,29 @@
 	      _react2.default.createElement(
 	        "p",
 	        { className: "sub-row" },
-	        this.props.fullName
+	        props.fullName
 	      ),
 	      _react2.default.createElement(
 	        "p",
 	        { className: "sub-row" },
-	        this.props.wordCount
+	        props.wordCount
 	      ),
 	      _react2.default.createElement(
 	        "p",
 	        { className: "sub-row" },
-	        this.props.timeAgo
+	        props.timeAgo
 	      )
 	    )
 	  );
 	}
 	
-	Row.PropTypes = {
+	Row.propTypes = {
 	  img: _react2.default.PropTypes.string,
 	  title: _react2.default.PropTypes.string,
 	  stamp: _react2.default.PropTypes.string,
 	  url: _react2.default.PropTypes.string,
 	  fullName: _react2.default.PropTypes.string,
-	  wordCount: _react2.default.PropTypes.string,
+	  wordCount: _react2.default.PropTypes.number,
 	  timeAgo: _react2.default.PropTypes.string
 	};
 	Row.defaultProps = {
@@ -37007,37 +37058,43 @@
 /* 581 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = timeSince;
+	// due to the fact that the output is not interesting.
+	// instead of using new Date() to get the current time,
+	// I'm going to use '2013-11-09 13:59:40' as the current time
+	// this would be swapped for anything real.
+	
 	function timeSince(date) {
-	  var seconds = Math.floor((new Date() - date) / 1000);
+	  var dateString = Date.parse(date);
+	  var seconds = Math.floor((Date.parse('2013-11-09 13:59:40') - dateString) / 1000);
 	
 	  var interval = Math.floor(seconds / 31536000);
 	
 	  if (interval > 1) {
-	    return interval + " years ago";
+	    return interval + ' years ago';
 	  }
 	  interval = Math.floor(seconds / 2592000);
 	  if (interval > 1) {
-	    return interval + " months ago";
+	    return interval + ' months ago';
 	  }
 	  interval = Math.floor(seconds / 86400);
 	  if (interval > 1) {
-	    return interval + " days ago";
+	    return interval + ' days ago';
 	  }
 	  interval = Math.floor(seconds / 3600);
 	  if (interval > 1) {
-	    return interval + " hours ago";
+	    return interval + ' hours ago';
 	  }
 	  interval = Math.floor(seconds / 60);
 	  if (interval > 1) {
-	    return interval + " minutes ago";
+	    return interval + ' minutes ago';
 	  }
-	  return Math.floor(seconds) + " seconds ago";
+	  return Math.floor(seconds) + ' seconds ago';
 	}
 
 /***/ },
@@ -37059,17 +37116,24 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function Footer() {
+	function btn() {
 	  return _react2.default.createElement(
-	    'footer',
-	    { className: 'footer-container' },
-	    _react2.default.createElement(
-	      'button',
-	      { className: 'footer-btn', onClick: _article_actions.getNextPage },
-	      'Load More'
-	    )
+	    'button',
+	    { className: 'footer-btn', onClick: _article_actions.getNextPage },
+	    'Load More'
 	  );
 	}
+	
+	function Footer(props) {
+	  var klass = props.complete ? 'footer-container u-drk-bg' : 'footer-container';
+	  return _react2.default.createElement(
+	    'footer',
+	    { className: klass },
+	    props.complete ? null : btn()
+	  );
+	}
+	Footer.propTypes = { complete: _react2.default.PropTypes.bool };
+	Footer.defaultProps = { complete: false };
 
 /***/ }
 /******/ ]);
