@@ -6,6 +6,10 @@
   "directories": {
     "test": "test"
   },
+  "scripts": {
+    "start": "http-server -p 8080",
+    "test": "mocha test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
