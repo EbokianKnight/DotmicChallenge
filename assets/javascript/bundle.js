@@ -28143,6 +28143,18 @@
 	
 	var _header2 = _interopRequireDefault(_header);
 	
+	var _article_store = __webpack_require__(554);
+	
+	var _article_store2 = _interopRequireDefault(_article_store);
+	
+	var _row_container = __webpack_require__(579);
+	
+	var _row_container2 = _interopRequireDefault(_row_container);
+	
+	var _footer = __webpack_require__(582);
+	
+	var _footer2 = _interopRequireDefault(_footer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Main = function (_React$Component) {
@@ -28153,11 +28165,35 @@
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Main).call(this, props));
 	
-	    _this.state = {};
+	    _this.state = { articles: _article_store2.default.provideArticles() };
+	    _this.renderArticles = _this.renderArticles.bind(_this);
+	    _this.getStateFromStore = function () {
+	      _this.setState({ articles: _article_store2.default.provideArticles() });
+	    };
 	    return _this;
 	  }
 	
 	  (0, _createClass3.default)(Main, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.token = _article_store2.default.addListener(this.getStateFromStore);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.token.remove();
+	    }
+	  }, {
+	    key: 'renderArticles',
+	    value: function renderArticles() {
+	      /*eslint-disable */
+	      console.log(this.state);
+	      /*eslint-enable */
+	      return this.state.articles.map(function (row) {
+	        return _react2.default.createElement(_row_container2.default, { key: row.id, article: row });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -28167,61 +28203,16 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row-index-wrapper' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row-container' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'main-row' },
-	              _react2.default.createElement('div', { className: 'icon' }),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'row-article-title' },
-	                'Ipsum Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'bootcamp' },
-	                'Bootcamp'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'sub-row-index' },
-	              _react2.default.createElement(
-	                'a',
-	                { href: '#', className: 'sub-row' },
-	                'Medha Chandorkar'
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                { className: 'sub-row' },
-	                '433'
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                { className: 'sub-row' },
-	                '6 minutes ago'
-	              )
-	            )
-	          )
+	          this.renderArticles()
 	        ),
-	        _react2.default.createElement(
-	          'footer',
-	          { className: 'footer-container' },
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'row-load-btn' },
-	            'Load More'
-	          )
-	        )
+	        _react2.default.createElement(_footer2.default, null)
 	      );
 	    }
 	  }]);
 	  return Main;
 	}(_react2.default.Component);
 	
-	Main.propTypes = { articles: _react2.default.PropTypes.array };
+	Main.PropTypes = { articles: _react2.default.PropTypes.array };
 	Main.defaultProps = { articles: [] };
 	
 	exports.default = Main;
@@ -29824,9 +29815,9 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var count = 'sub-row header u-color-alt';
-	      var author = 'sub-row header u-color-alt';
-	      var date = 'sub-row header u-color-alt';
+	      var count = 'sub-row header';
+	      var author = 'sub-row header';
+	      var date = 'sub-row header';
 	      var order = _article_store2.default.getOrder();
 	      if (this.state.sortBy === 'count') {
 	        count = 'sub-row header ' + order;
@@ -29878,7 +29869,7 @@
 	  return Header;
 	}(_react2.default.Component);
 	
-	Header.propTypes = { sortBy: _react2.default.PropTypes.string };
+	Header.PropTypes = { sortBy: _react2.default.PropTypes.string };
 	Header.defaultProps = { sortBy: 'none' };
 	
 	exports.default = Header;
@@ -29903,18 +29894,15 @@
 	
 	var _api_util = __webpack_require__(577);
 	
-	var _api_util2 = _interopRequireDefault(_api_util);
-	
-	var _sort_articles = __webpack_require__(578);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// import { sortArticles } from '../utils/sort_articles';
 	var ArticleStore = new _utils.Store(_dispatcher2.default);
 	
 	var lastSortedBy = 'none';
 	var articleList = [];
 	var shownArticles = [];
-	var pageNumber = 1;
+	var pageNumber = 0;
 	var orderBy = 'up';
 	var sorted = true;
 	
@@ -29973,7 +29961,6 @@
 	      break;
 	  }
 	};
-	/*eslint-enable */
 	
 	function toggleOrder() {
 	  orderBy = orderBy === 'up' ? 'down' : 'up';
@@ -29981,20 +29968,22 @@
 	
 	// this loads the next ten ads into shownArticles
 	function showTenMoreArticles() {
-	  if (articleList >= 10 * pageNumber) {
-	    var index = pageNumber * 10;
-	    for (var i = 0; i < 10; i++) {
-	      shownArticles.push(articleList[index + i]);
-	    }
+	  var total = articleList.length;
+	  var next = 10 * pageNumber;
+	  var last = 10 * (pageNumber + 1);
+	  if (total >= last) {
+	    shownArticles = shownArticles.concat(articleList.slice(next, last));
 	    pageNumber++;
-	  } else {
-	    _api_util2.default.getMoreAds();
+	  } else if (total === 0) {
+	    (0, _api_util.loadJSON)('../src/dbfaker/articles.json');
+	  } else if (total > 0 && total < 60) {
+	    (0, _api_util.loadJSON)('../src/dbfaker/more-articles.json');
 	  }
 	}
 	
 	// this loads all of the json into a storage variable
 	function cacheArticles(articles) {
-	  articleList.push(articles);
+	  articleList = articleList.concat(articles);
 	}
 	
 	// return the total number of shown articles
@@ -30014,11 +30003,15 @@
 	// if there are articles loaded, return a sorted version
 	ArticleStore.provideArticles = function provideArticles() {
 	  if (sorted) return shownArticles;
-	  sorted = true;
-	  return (0, _sort_articles.sortArticles)(shownArticles, orderBy, lastSortedBy);
+	  // sorted = true;
+	  // console.log(sortArticles);
+	  // console.log(sortArticles(shownArticles, orderBy, lastSortedBy));
+	  // return sortArticles(shownArticles, orderBy, lastSortedBy);
+	  return shownArticles;
 	};
 	
 	exports.default = ArticleStore;
+	/*eslint-enable */
 
 /***/ },
 /* 555 */
@@ -36856,64 +36849,226 @@
 
 /***/ },
 /* 577 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-/***/ },
-/* 578 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.sortArticles = sortArticles;
-	function customSort(property) {
-	  var sortOrder = 1;
-	  var theProperty = property;
-	  if (property[0] === '-') {
-	    sortOrder = -1;
-	    theProperty = property.slice(1);
-	  }
-	  return function compare(a, b) {
-	    var result = 0;
-	    if ([theProperty] < b[theProperty]) {
-	      result = -1;
-	    } else if ([theProperty] > b[theProperty]) {
-	      result = 1;
-	    }
-	    return result * sortOrder;
-	  };
+	exports.loadJSON = loadJSON;
+	
+	var _article_actions = __webpack_require__(576);
+	
+	// callback
+	function response(json) {
+	  (0, _article_actions.loadMoreArticles)(JSON.parse(json));
 	}
 	
-	function sortArticles(articles, by, order) {
-	  switch (by) {
-	    case 'count':
-	      if (order === 'up') {
-	        articles.sort(customSort('words'));
-	      } else {
-	        articles.sort(customSort('-words'));
-	      }
-	      break;
-	    case 'author':
-	      if (order === 'up') {
-	        articles.sort(customSort('profile.last_name'));
-	      } else {
-	        articles.sort(customSort('-profile.last_name'));
-	      }
-	      break;
-	    case 'date':
-	      if (order === 'up') {
-	        articles.sort(customSort('publish_at'));
-	      } else {
-	        articles.sort(customSort('-publish_at'));
-	      }
-	      break;
-	    default:
-	      articles.sort(customSort('-id'));
+	// make an xml request to a JSON file
+	// load async and fireoff response on success callback
+	function loadJSON(path) {
+	  var xhr = new XMLHttpRequest();
+	  xhr.overrideMimeType('application/json');
+	  xhr.open('GET', path, true);
+	  xhr.onreadystatechange = function () {
+	    if (xhr.readyState === 4) {
+	      response(xhr.responseText);
+	    }
+	  };
+	  xhr.send(null);
+	}
+
+/***/ },
+/* 578 */,
+/* 579 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = RowContainer;
+	
+	var _react = __webpack_require__(300);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _row = __webpack_require__(580);
+	
+	var _row2 = _interopRequireDefault(_row);
+	
+	var _time_since = __webpack_require__(581);
+	
+	var _time_since2 = _interopRequireDefault(_time_since);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function fullName(first, last) {
+	  return first + ' ' + last;
+	}
+	
+	function RowContainer() {
+	  var art = this.props.article;
+	  if (art.length === 0) return _react2.default.createElement('div', null);
+	  return _react2.default.createElement(_row2.default, {
+	    img: art.image,
+	    url: art.url,
+	    title: art.title,
+	    stamp: '',
+	    fullName: fullName(art.profile.first_name, art.profile.last_name),
+	    wordCount: art.words,
+	    timeAgo: (0, _time_since2.default)(art.publish_at)
+	  });
+	}
+	
+	RowContainer.PropTypes = { article: _react2.default.PropTypes.object };
+	RowContainer.defaultProps = { article: {} };
+
+/***/ },
+/* 580 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = Row;
+	
+	var _react = __webpack_require__(300);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function Row() {
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "row-container" },
+	    _react2.default.createElement(
+	      "div",
+	      { className: "main-row" },
+	      _react2.default.createElement("img", { alt: this.props.img, className: "icon" }),
+	      _react2.default.createElement(
+	        "a",
+	        { href: this.props.url, className: "row-article-title" },
+	        this.props.title
+	      ),
+	      _react2.default.createElement(
+	        "div",
+	        { className: "bootcamp" },
+	        this.props.stamp
+	      )
+	    ),
+	    _react2.default.createElement(
+	      "div",
+	      { className: "sub-row-index" },
+	      _react2.default.createElement(
+	        "p",
+	        { className: "sub-row" },
+	        this.props.fullName
+	      ),
+	      _react2.default.createElement(
+	        "p",
+	        { className: "sub-row" },
+	        this.props.wordCount
+	      ),
+	      _react2.default.createElement(
+	        "p",
+	        { className: "sub-row" },
+	        this.props.timeAgo
+	      )
+	    )
+	  );
+	}
+	
+	Row.PropTypes = {
+	  img: _react2.default.PropTypes.string,
+	  title: _react2.default.PropTypes.string,
+	  stamp: _react2.default.PropTypes.string,
+	  url: _react2.default.PropTypes.string,
+	  fullName: _react2.default.PropTypes.string,
+	  wordCount: _react2.default.PropTypes.string,
+	  timeAgo: _react2.default.PropTypes.string
+	};
+	Row.defaultProps = {
+	  img: '',
+	  title: 'Loading...',
+	  stamp: '',
+	  url: '',
+	  fullName: '',
+	  wordCount: '',
+	  timeAgo: ''
+	};
+
+/***/ },
+/* 581 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = timeSince;
+	function timeSince(date) {
+	  var seconds = Math.floor((new Date() - date) / 1000);
+	
+	  var interval = Math.floor(seconds / 31536000);
+	
+	  if (interval > 1) {
+	    return interval + " years ago";
 	  }
+	  interval = Math.floor(seconds / 2592000);
+	  if (interval > 1) {
+	    return interval + " months ago";
+	  }
+	  interval = Math.floor(seconds / 86400);
+	  if (interval > 1) {
+	    return interval + " days ago";
+	  }
+	  interval = Math.floor(seconds / 3600);
+	  if (interval > 1) {
+	    return interval + " hours ago";
+	  }
+	  interval = Math.floor(seconds / 60);
+	  if (interval > 1) {
+	    return interval + " minutes ago";
+	  }
+	  return Math.floor(seconds) + " seconds ago";
+	}
+
+/***/ },
+/* 582 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = Footer;
+	
+	var _react = __webpack_require__(300);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _article_actions = __webpack_require__(576);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function Footer() {
+	  return _react2.default.createElement(
+	    'footer',
+	    { className: 'footer-container' },
+	    _react2.default.createElement(
+	      'button',
+	      { className: 'footer-btn', onClick: _article_actions.getNextPage },
+	      'Load More'
+	    )
+	  );
 	}
 
 /***/ }

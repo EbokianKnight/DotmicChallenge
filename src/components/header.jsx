@@ -19,9 +19,9 @@ class Header extends React.Component {
     this.storeToken.remove();
   }
   render() {
-    let count = 'sub-row header u-color-alt';
-    let author = 'sub-row header u-color-alt';
-    let date = 'sub-row header u-color-alt';
+    let count = 'sub-row header';
+    let author = 'sub-row header';
+    let date = 'sub-row header';
     const order = ArticleStore.getOrder();
     if (this.state.sortBy === 'count') {
       count = `sub-row header ${order}`;
@@ -53,7 +53,7 @@ class Header extends React.Component {
   }
 }
 
-Header.propTypes = { sortBy: React.PropTypes.string };
+Header.PropTypes = { sortBy: React.PropTypes.string };
 Header.defaultProps = { sortBy: 'none' };
 
 export default Header;

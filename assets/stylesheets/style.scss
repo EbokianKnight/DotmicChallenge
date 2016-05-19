@@ -118,7 +118,7 @@ body {
   height: $max-row-height;
   box-sizing: border-box;
   text-align: center;
-  width: 10vw;
+  width: $small-col;
   padding: 0 0.5vw;
   flex-grow: 0;
   flex-shrink: 0;
@@ -155,6 +155,10 @@ body {
   @extend .flex-container;
   background: $row-bg;
   border: 1px solid $row-border;
+}
+.footer-btn {
+  cursor: pointer;
+  flex-grow: 1;
   padding: 1em;
 }
 

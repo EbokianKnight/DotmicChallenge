@@ -116,7 +116,11 @@ body {
 
 .footer-container {
   background: #f8f8f8;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #e6e6e6; }
+
+.footer-btn {
+  cursor: pointer;
+  flex-grow: 1;
   padding: 1em; }
 
 .up:after {

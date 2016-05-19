@@ -1,47 +1,46 @@
 import React from 'react';
 import Header from './header';
+import ArticleStore from '../stores/article_store';
+import RowContainer from './row_container';
+import Footer from './footer';
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { articles: ArticleStore.provideArticles() };
+    this.renderArticles = this.renderArticles.bind(this);
+    this.getStateFromStore = () => {
+      this.setState({ articles: ArticleStore.provideArticles() });
+    };
+  }
+  componentDidMount() {
+    this.token = ArticleStore.addListener(this.getStateFromStore);
+  }
+  componentWillUnmount() {
+    this.token.remove();
+  }
+  renderArticles() {
+    /*eslint-disable */
+    console.log(this.state)
+    /*eslint-enable */
+    return this.state.articles.map(row =>
+      <RowContainer key={row.id} article={row} />
+    );
   }
   render() {
     return (
       <div>
         <Header />
         <div className="row-index-wrapper">
-          <div className="row-container">
-            <div className="main-row">
-              <div className="icon"></div>
-              <div className="row-article-title">
-                Ipsum Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                 sed do eiusmod tempor
-              </div>
-              <div className="bootcamp">Bootcamp</div>
-            </div>
-            <div className="sub-row-index">
-              <a href="#" className="sub-row">
-                Medha Chandorkar
-              </a>
-              <p className="sub-row">
-                433
-              </p>
-              <p className="sub-row">
-                6 minutes ago
-              </p>
-            </div>
-          </div>
+          {this.renderArticles()}
         </div>
-        <footer className="footer-container">
-          <button className="row-load-btn">Load More</button>
-        </footer>
+        <Footer />
       </div>
     );
   }
 }
 
-Main.propTypes = { articles: React.PropTypes.array };
+Main.PropTypes = { articles: React.PropTypes.array };
 Main.defaultProps = { articles: [] };
 
 export default Main;
