@@ -1,5 +1,11 @@
+// due to the fact that the output is not interesting.
+// instead of using new Date() to get the current time,
+// I'm going to use '2013-11-09 13:59:40' as the current time
+// this would be swapped for anything real.
+
 export default function timeSince(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
+  const dateString = Date.parse(date);
+  const seconds = Math.floor((Date.parse('2013-11-09 13:59:40') - dateString) / 1000);
 
   let interval = Math.floor(seconds / 31536000);
 
