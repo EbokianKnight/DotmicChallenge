@@ -1,7 +1,7 @@
 import React from 'react';
 import ArticleStore from '../stores/article_store';
 
-import { sortByDate, sortByAuthor, sortByCount, sortByDefault }
+import { sortByDate, sortByCount, sortByDefault }
   from '../actions/article_actions';
 
 class Header extends React.Component {
@@ -19,27 +19,25 @@ class Header extends React.Component {
     this.storeToken.remove();
   }
   render() {
-    let count = 'sub-row header';
+    let count = 'sub-row header btn';
     let author = 'sub-row header';
-    let date = 'sub-row header';
+    let date = 'sub-row header btn';
     const order = ArticleStore.getOrder();
     if (this.state.sortBy === 'count') {
-      count = `sub-row header ${order}`;
-    } else if (this.state.sortBy === 'author') {
-      author = `sub-row header ${order}`;
+      count = `sub-row header btn ${order}`;
     } else if (this.state.sortBy === 'date') {
-      date = `sub-row header ${order}`;
+      date = `sub-row header btn ${order}`;
     }
     return (
       <div>
         <header className="header-container">
-          <div className="main-row" onClick={sortByDefault}>
+          <div className="main-row btn" onClick={sortByDefault}>
             <p>Unpublished Articles ({ArticleStore.getTotal()})</p>
           </div>
           <div className="sub-row-index">
-            <button className={author} onClick={sortByAuthor}>
+            <p className={author}>
               Author
-            </button>
+            </p>
             <button className={count} onClick={sortByCount}>
               Words
             </button>
@@ -53,7 +51,7 @@ class Header extends React.Component {
   }
 }
 
-Header.PropTypes = { sortBy: React.PropTypes.string };
+Header.propTypes = { sortBy: React.PropTypes.string };
 Header.defaultProps = { sortBy: 'none' };
 
 export default Header;
