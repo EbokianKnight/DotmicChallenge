@@ -11,11 +11,13 @@ const articleList = [];
 const shownArticles = [];
 let pageNumber = 1;
 let orderBy = 'up';
+let sorted = true;
 
 /*eslint-disable */
 ArticleStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
     case ArticleActions.AUTHORSORTED:
+      sorted = false;
       if (lastSortedBy !== 'author') {
         lastSortedBy = 'author';
         orderBy = 'up';
@@ -25,6 +27,7 @@ ArticleStore.__onDispatch = (payload) => {
       ArticleStore.__emitChange();
       break;
     case ArticleActions.DATESORTED:
+      sorted = false;
       if (lastSortedBy !== 'date') {
         lastSortedBy = 'date';
         orderBy = 'up';
@@ -34,6 +37,7 @@ ArticleStore.__onDispatch = (payload) => {
       ArticleStore.__emitChange();
       break;
     case ArticleActions.COUNTSORTED:
+      sorted = false;
       if (lastSortedBy !== 'count') {
         lastSortedBy = 'count';
         orderBy = 'up';
@@ -43,6 +47,7 @@ ArticleStore.__onDispatch = (payload) => {
       ArticleStore.__emitChange();
       break;
     case ArticleActions.DEFAULTSORTED:
+      sorted = false;
       if (lastSortedBy !== 'none') {
         lastSortedBy = 'none';
         orderBy = 'up';
@@ -52,21 +57,18 @@ ArticleStore.__onDispatch = (payload) => {
       ArticleStore.__emitChange();
       break;
     case ArticleActions.PAGINATE:
+      sorted = false;
       showTenMoreArticles();
       ArticleStore.__emitChange();
       break;
     case ArticleActions.LOADARTICLES:
+      sorted = false;
       cacheArticles(payload.articles);
       ArticleStore.__emitChange();
       break;
   }
 };
 /*eslint-enable */
-
-// this shows the last filter that was applied to the list
-function sortedBy() {
-  return lastSortedBy;
-}
 
 function toggleOrder() {
   orderBy = orderBy === 'up' ? 'down' : 'up';
@@ -90,11 +92,21 @@ function cacheArticles(articles) {
   articleList.push(articles);
 }
 
-function provideArticles() {
-  return sortArticles(shownArticles);
-}
+// return the total number of shown articles
+ArticleStore.getTotal = function getTotal() {
+  return shownArticles.length;
+};
 
-ArticleStore.sortedBy = sortedBy;
-ArticleStore.provideArticles = provideArticles;
+// this shows the last filter that was applied to the list
+ArticleStore.sortedBy = function sortedBy() {
+  return lastSortedBy;
+};
+
+// if there are articles loaded, return a sorted version
+ArticleStore.provideArticles = function provideArticles() {
+  if (sorted) return shownArticles;
+  sorted = true;
+  return sortArticles(shownArticles, orderBy, lastSortedBy);
+};
 
 export default ArticleStore;

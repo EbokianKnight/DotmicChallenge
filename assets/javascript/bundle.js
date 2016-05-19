@@ -28163,7 +28163,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        (0, _header2.default)(),
+	        _react2.default.createElement(_header2.default, null),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row-index-wrapper' },
@@ -29790,9 +29790,15 @@
 	
 	var _article_store = __webpack_require__(554);
 	
+	var _article_store2 = _interopRequireDefault(_article_store);
+	
 	var _article_actions = __webpack_require__(576);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*eslint-disable */
+	debugger;
+	/*eslint-enable */
 	
 	var Header = function (_React$Component) {
 	  (0, _inherits3.default)(Header, _React$Component);
@@ -29803,21 +29809,24 @@
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Header).call(this, props));
 	
 	    _this.state = { sortBy: 'none' };
-	    _this.setStateFromStore = function () {
-	      _this.setState({ sortBy: _article_store.ArticleStore.sortedBy() });
-	    };
+	    _this.setStateFromStore.bind(_this);
 	    return _this;
 	  }
 	
 	  (0, _createClass3.default)(Header, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.storeToken = _article_store.ArticleStore.addListener(this.setStateFromStore);
+	      this.storeToken = _article_store2.default.addListener(this.setStateFromStore);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      this.storeToken.remove();
+	    }
+	  }, {
+	    key: 'setStateFromStore',
+	    value: function setStateFromStore() {
+	      this.setState({ sortBy: _article_store2.default.sortedBy() });
 	    }
 	  }, {
 	    key: 'render',
@@ -29844,7 +29853,7 @@
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              'Unpublished Articles (66)'
+	              'Unpublished Articles (ArticleStore.getTotal())'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -29874,7 +29883,7 @@
 	}(_react2.default.Component);
 	
 	Header.propTypes = { sortBy: _react2.default.PropTypes.string };
-	Header.defaultProps = { sortBy: _article_store.ArticleStore.sortedBy() };
+	Header.defaultProps = { sortBy: 'none' };
 	
 	exports.default = Header;
 
@@ -29911,11 +29920,13 @@
 	var shownArticles = [];
 	var pageNumber = 1;
 	var orderBy = 'up';
+	var sorted = true;
 	
 	/*eslint-disable */
 	ArticleStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case _article_actions.ArticleActions.AUTHORSORTED:
+	      sorted = false;
 	      if (lastSortedBy !== 'author') {
 	        lastSortedBy = 'author';
 	        orderBy = 'up';
@@ -29925,6 +29936,7 @@
 	      ArticleStore.__emitChange();
 	      break;
 	    case _article_actions.ArticleActions.DATESORTED:
+	      sorted = false;
 	      if (lastSortedBy !== 'date') {
 	        lastSortedBy = 'date';
 	        orderBy = 'up';
@@ -29934,6 +29946,7 @@
 	      ArticleStore.__emitChange();
 	      break;
 	    case _article_actions.ArticleActions.COUNTSORTED:
+	      sorted = false;
 	      if (lastSortedBy !== 'count') {
 	        lastSortedBy = 'count';
 	        orderBy = 'up';
@@ -29943,6 +29956,7 @@
 	      ArticleStore.__emitChange();
 	      break;
 	    case _article_actions.ArticleActions.DEFAULTSORTED:
+	      sorted = false;
 	      if (lastSortedBy !== 'none') {
 	        lastSortedBy = 'none';
 	        orderBy = 'up';
@@ -29952,21 +29966,18 @@
 	      ArticleStore.__emitChange();
 	      break;
 	    case _article_actions.ArticleActions.PAGINATE:
+	      sorted = false;
 	      showTenMoreArticles();
 	      ArticleStore.__emitChange();
 	      break;
 	    case _article_actions.ArticleActions.LOADARTICLES:
+	      sorted = false;
 	      cacheArticles(payload.articles);
 	      ArticleStore.__emitChange();
 	      break;
 	  }
 	};
 	/*eslint-enable */
-	
-	// this shows the last filter that was applied to the list
-	function sortedBy() {
-	  return lastSortedBy;
-	}
 	
 	function toggleOrder() {
 	  orderBy = orderBy === 'up' ? 'down' : 'up';
@@ -29990,12 +30001,22 @@
 	  articleList.push(articles);
 	}
 	
-	function provideArticles() {
-	  return (0, _sort_articles.sortArticles)(shownArticles);
-	}
+	// return the total number of shown articles
+	ArticleStore.getTotal = function getTotal() {
+	  return shownArticles.length;
+	};
 	
-	ArticleStore.sortedBy = sortedBy;
-	ArticleStore.provideArticles = provideArticles;
+	// this shows the last filter that was applied to the list
+	ArticleStore.sortedBy = function sortedBy() {
+	  return lastSortedBy;
+	};
+	
+	// if there are articles loaded, return a sorted version
+	ArticleStore.provideArticles = function provideArticles() {
+	  if (sorted) return shownArticles;
+	  sorted = true;
+	  return (0, _sort_articles.sortArticles)(shownArticles, orderBy, lastSortedBy);
+	};
 	
 	exports.default = ArticleStore;
 

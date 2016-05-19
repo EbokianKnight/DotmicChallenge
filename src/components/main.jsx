@@ -1,5 +1,5 @@
 import React from 'react';
-import header from './header';
+import Header from './header';
 
 class Main extends React.Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        {header()}
+        <Header />
         <div className="row-index-wrapper">
           <div className="row-container">
             <div className="main-row">

@@ -1,5 +1,10 @@
 import React from 'react';
-import { ArticleStore } from '../stores/article_store';
+import ArticleStore from '../stores/article_store';
+
+/*eslint-disable */
+debugger;
+/*eslint-enable */
+
 import { sortByDate, sortByAuthor, sortByCount, sortByDefault }
   from '../actions/article_actions';
 
@@ -7,15 +12,16 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = { sortBy: 'none' };
-    this.setStateFromStore = () => {
-      this.setState({ sortBy: ArticleStore.sortedBy() });
-    };
+    this.setStateFromStore.bind(this);
   }
   componentDidMount() {
     this.storeToken = ArticleStore.addListener(this.setStateFromStore);
   }
   componentWillUnmount() {
     this.storeToken.remove();
+  }
+  setStateFromStore() {
+    this.setState({ sortBy: ArticleStore.sortedBy() });
   }
   render() {
     let count = 'sub-row header u-color-alt';
@@ -32,7 +38,7 @@ class Header extends React.Component {
       <div>
         <header className="header-container">
           <div className="main-row" onClick={sortByDefault}>
-            <p>Unpublished Articles (66)</p>
+            <p>Unpublished Articles (ArticleStore.getTotal())</p>
           </div>
           <div className="sub-row-index">
             <button className={author} onClick={sortByAuthor}>
@@ -52,6 +58,6 @@ class Header extends React.Component {
 }
 
 Header.propTypes = { sortBy: React.PropTypes.string };
-Header.defaultProps = { sortBy: ArticleStore.sortedBy() };
+Header.defaultProps = { sortBy: 'none' };
 
 export default Header;
