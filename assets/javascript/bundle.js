@@ -29799,7 +29799,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          {
-	            className: 'sub-row header u-color-sortable',
+	            className: 'sub-row header u-color-alt',
 	            onClick: _article_actions.sortByCount
 	          },
 	          'Words'
@@ -29807,7 +29807,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          {
-	            className: 'sub-row header u-color-sortable',
+	            className: 'sub-row header u-color-alt',
 	            onClick: _article_actions.sortByDate
 	          },
 	          'Submitted'

@@ -7,6 +7,7 @@ $header-txt: rgb(255,255,248);
 $row-bg: rgb(248,248,248);
 $row-drkbg: rgb(238,238,238);
 $row-text: rgb(0,86,126);
+$alt-row-text: black;
 $row-border: rgb(230,230,230);
 $bootcamp: rgb(57,118,56);
 
@@ -141,8 +142,8 @@ body {
   font-weight: bold;
   padding-right: 1em;
 }
-.u-color-black {
-  color: black !important;
+.u-color-alt {
+  color: $alt-row-text !important;
 }
 .footer-container {
   @extend .container-size;

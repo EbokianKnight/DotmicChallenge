@@ -11,13 +11,13 @@ function Header() {
         <div className="sub-row-index">
           <button className="sub-row header" onClick={sortByAuthor}>Author</button>
           <button
-            className="sub-row header u-color-sortable"
+            className="sub-row header u-color-alt"
             onClick={sortByCount}
           >
             Words
           </button>
           <button
-            className="sub-row header u-color-sortable"
+            className="sub-row header u-color-alt"
             onClick={sortByDate}
           >
             Submitted
