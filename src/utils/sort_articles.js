@@ -7,39 +7,16 @@ function customSort(property) {
   }
   return function compare(a, b) {
     let result = 0;
-    if ([theProperty] < b[theProperty]) {
+    if (a[theProperty] < b[theProperty]) {
       result = -1;
-    } else if ([theProperty] > b[theProperty]) {
+    } else if (a[theProperty] > b[theProperty]) {
       result = 1;
     }
     return result * sortOrder;
   };
 }
 
-export function sortArticles(articles, by, order) {
-  switch (by) {
-    case 'count':
-      if (order === 'up') {
-        articles.sort(customSort('words'));
-      } else {
-        articles.sort(customSort('-words'));
-      }
-      break;
-    case 'author':
-      if (order === 'up') {
-        articles.sort(customSort('profile.last_name'));
-      } else {
-        articles.sort(customSort('-profile.last_name'));
-      }
-      break;
-    case 'date':
-      if (order === 'up') {
-        articles.sort(customSort('publish_at'));
-      } else {
-        articles.sort(customSort('-publish_at'));
-      }
-      break;
-    default:
-      articles.sort(customSort('-id'));
-  }
+export default function sortArticles(articles, sortBy) {
+  articles.sort(customSort(sortBy));
+  return articles;
 }
