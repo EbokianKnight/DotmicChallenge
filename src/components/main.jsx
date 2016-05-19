@@ -19,16 +19,24 @@ class Main extends React.Component {
           </div>
         </header>
         <div className="row-container">
-          <div className="row-col-1">
+          <div className="row-main-col">
             <div className="icon"></div>
             <div className="row-article-title">
               Ipsum Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
             </div>
             <div className="bootcamp">Bootcamp</div>
           </div>
-          <a href="#" className="row-article-author">Medha Chandorkar</a>
-          <p className="row-article-wordcount">433</p>
-          <p className="row-article-submital">6 minutes ago</p>
+          <div className="row-side-cols">
+            <a href="#" className="row-article-author">
+              Medha Chandorkar
+            </a>
+            <p className="row-article-wordcount">
+              433
+            </p>
+            <p className="row-article-submital">
+              6 minutes ago
+            </p>
+          </div>
         </div>
         <footer className="footer-container">
           <button className="row-load-btn">Load More</button>

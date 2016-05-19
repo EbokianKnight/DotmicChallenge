@@ -1,0 +1,182 @@
+// Colors
+$header-bg-top: rgb(192,29,69);
+$header-bg-mid: rgb(164,22,57);
+$header-bg-btm: rgb(140,19,49);
+$header-odd-underline: rgb(200,0,23);
+$header-txt: rgb(255,255,248);
+$row-bg: rgb(248,248,248);
+$row-text: rgb(0,86,126);
+$row-border: #ccc;
+$bootcamp: rgb(57,118,56);
+
+// sizes
+$small: 0.8em;
+$medium: 1em;
+$large: 1.6em;
+$huge: 2.4em;
+
+// grid
+$max-row-height: 5rem;
+$small-col: 10vw;
+
+// css reset
+body, header nav, a, h1, h2, h3, h4, h5, h6,
+li, ul, ol, div, span, strong, main, section,
+img, div, p, form, fieldset, label, input,
+textarea, button, article, footer, small {
+	vertical-align: baseline;
+	font-weight: inherit;
+	text-decoration: none;
+	font-family: inherit;
+	font-style: inherit;
+	font-size: inherit;
+	border: 0 none;
+	outline: 0;
+	color: inherit;
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	list-style: none;
+}
+
+html {
+  font-size: 75%;
+}
+
+body {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 1rem;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+.flex-container {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.container-size {
+  width: 95vw;
+  margin: 0 2.5vw;
+  box-sizing: border-box;
+  max-height: $max-row-height;
+}
+
+.header-container {
+  text-transform: uppercase;
+  border: 1px solid $header-bg-btm;
+  border-bottom: 3px solid $header-odd-underline;
+  @extend .flex-container;
+  @extend .container-size;
+  justify-content: space-between;
+  font-size: $medium;
+  font-weight: bold;
+  overflow: hidden;
+  color: $header-txt;
+  background: $header-bg-mid; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient($header-bg-top, $header-bg-btm); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient($header-bg-top, $header-bg-btm); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient($header-bg-top, $header-bg-btm); /* For Firefox 3.6 to 15 */
+  background: linear-gradient($header-bg-top, $header-bg-btm); /* Standard syntax */
+}
+
+.small-col {
+  padding: 0 1vw;
+  height: $max-row-height;
+  width: $small-col;
+  min-width: 70px;
+  text-align: center;
+  @extend .flex-container;
+}
+
+.left-header {
+  min-width: 350px;
+}
+
+.left-header > p {
+  padding: 0 1em;
+}
+
+.right-header {
+  @extend .flex-container;
+}
+.right-header > p {
+  @extend .small-col;
+  border-left: 1px solid $header-bg-btm;
+}
+
+.row-container {
+  @extend .container-size;
+  @extend .flex-container;
+  justify-content: space-between;
+  padding: 1em 0;
+  background: $row-bg;
+  color: $row-text;
+  border-left: 1px solid $row-border;
+  border-right: 1px solid $row-border;
+  border-top: 1px solid $row-border;
+}
+.row-main-col {
+  @extend .flex-container;
+  min-width: 350px;
+  flex-grow: 1;
+  justify-content: flex-start;
+}
+.icon {
+  height: 45px;
+  width: 45px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  background: #777;
+  margin: 0 1em;
+}
+.bootcamp {
+  position: absolute;
+  right: 1em;
+  bottom: 0;
+  color: $bootcamp;
+  font-size: $small;
+  font-weight: bolder;
+}
+.row-article-title {
+  font-weight: bold;
+}
+
+.row-side-cols {
+  @extend .flex-container;
+}
+.row-article-author {
+  @extend .small-col;
+  border-left: 1px solid $row-border;
+}
+.row-article-submital {
+  @extend .small-col;
+  color: black;
+  border-left: 1px solid $row-border;
+}
+.row-article-wordcount {
+  @extend .small-col;
+  color: black;
+  border-left: 1px solid $row-border;
+}
+.footer-container {
+  @extend .container-size;
+  @extend .flex-container;
+  background: $row-bg;
+  border: 1px solid $row-border;
+  padding: 1em;
+}

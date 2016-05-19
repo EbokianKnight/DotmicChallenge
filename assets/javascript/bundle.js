@@ -29721,7 +29721,7 @@
 	          { className: "row-container" },
 	          _react2.default.createElement(
 	            "div",
-	            { className: "row-col-1" },
+	            { className: "row-main-col" },
 	            _react2.default.createElement("div", { className: "icon" }),
 	            _react2.default.createElement(
 	              "div",
@@ -29735,19 +29735,23 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            "a",
-	            { href: "#", className: "row-article-author" },
-	            "Medha Chandorkar"
-	          ),
-	          _react2.default.createElement(
-	            "p",
-	            { className: "row-article-wordcount" },
-	            "433"
-	          ),
-	          _react2.default.createElement(
-	            "p",
-	            { className: "row-article-submital" },
-	            "6 minutes ago"
+	            "div",
+	            { className: "row-side-cols" },
+	            _react2.default.createElement(
+	              "a",
+	              { href: "#", className: "row-article-author" },
+	              "Medha Chandorkar"
+	            ),
+	            _react2.default.createElement(
+	              "p",
+	              { className: "row-article-wordcount" },
+	              "433"
+	            ),
+	            _react2.default.createElement(
+	              "p",
+	              { className: "row-article-submital" },
+	              "6 minutes ago"
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
