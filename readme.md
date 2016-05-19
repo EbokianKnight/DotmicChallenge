@@ -16,13 +16,13 @@ attention to detail and affinity for standards based development.
 * StepFive. <a href="http://localhost:8080/src/index.html">Click Here</a>
 
 ###Needs
-[x] populate the page with data from articles.json
-[x] paginate the query by tens
-[x] provide a load more button to load another page
-[x] if the original query is deleted, ajax another call to more-articles.json
-[x] enable table sorting by **words** and **submitted** cols, cache settings
-[x] provide a similar to provided UI that is clear and functional
-[x] enable local storage to store sorting variables during refresh.
+- [x] populate the page with data from articles.json
+- [x] paginate the query by tens
+- [x] provide a load more button to load another page
+- [x] if the original query is deleted, ajax another call to more-articles.json
+- [x] enable table sorting by **words** and **submitted** cols, cache settings
+- [x] provide a similar to provided UI that is clear and functional
+- [x] enable local storage to store sorting variables during refresh.
 
 ###Component Map
 * Index.jsx to wrap the Main page
