@@ -4,6 +4,7 @@ export const ArticleActions = {
   AUTHORSORTED: 'AUTHORSORTED',
   COUNTSORTED: 'COUNTSORTED',
   DATESORTED: 'DATESORTED',
+  DEFAULTSORTED: 'DEFAULTSORTED',
   PAGINATE: 'GET_NEXT_PAGE',
   LOADARTICLES: 'LOADARTICLES',
 };
@@ -36,5 +37,11 @@ export function sortByCount() {
 export function sortByDate() {
   Dispatcher.dispatch({
     actionType: ArticleActions.DATESORTED,
+  });
+}
+
+export function sortByDefault() {
+  Dispatcher.dispatch({
+    actionType: ArticleActions.DEFAULTSORTED,
   });
 }
