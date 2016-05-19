@@ -42,6 +42,7 @@ body {
 .header-container {
   color: #fffff8;
   font-weight: bold;
+  cursor: pointer;
   text-transform: uppercase;
   border: 1px solid #8c1331;
   border-bottom: 3px solid #c80017;

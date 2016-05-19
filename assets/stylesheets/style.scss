@@ -76,6 +76,7 @@ body {
   @extend .total-row-size;
   color: $header-txt;
   font-weight: bold;
+  cursor: pointer;
   text-transform: uppercase;
   border: 1px solid $header-bg-btm;
   border-bottom: 3px solid $header-odd-underline;
