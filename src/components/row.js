@@ -1,37 +1,37 @@
 import React from 'react';
 
-export default function Row() {
+export default function Row(props) {
   return (
-    <div className="row-container">
+    <div className="expand row-container">
       <div className="main-row">
-        <img alt={this.props.img} className="icon" />
-        <a href={this.props.url} className="row-article-title">
-          {this.props.title}
+        <img src={props.img} alt={props.img} className="icon" />
+        <a href={props.url} className="row-article-title">
+          {props.title}
         </a>
-        <div className="bootcamp">{this.props.stamp}</div>
+        <div className="bootcamp">{props.stamp}</div>
       </div>
       <div className="sub-row-index">
         <p className="sub-row">
-          {this.props.fullName}
+          {props.fullName}
         </p>
         <p className="sub-row">
-          {this.props.wordCount}
+          {props.wordCount}
         </p>
         <p className="sub-row">
-          {this.props.timeAgo}
+          {props.timeAgo}
         </p>
       </div>
     </div>
   );
 }
 
-Row.PropTypes = {
+Row.propTypes = {
   img: React.PropTypes.string,
   title: React.PropTypes.string,
   stamp: React.PropTypes.string,
   url: React.PropTypes.string,
   fullName: React.PropTypes.string,
-  wordCount: React.PropTypes.string,
+  wordCount: React.PropTypes.number,
   timeAgo: React.PropTypes.string,
 };
 Row.defaultProps = {

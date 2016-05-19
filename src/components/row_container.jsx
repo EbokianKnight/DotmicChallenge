@@ -6,8 +6,8 @@ function fullName(first, last) {
   return `${first} ${last}`;
 }
 
-export default function RowContainer() {
-  const art = this.props.article;
+export default function RowContainer(props) {
+  const art = props.article;
   if (art.length === 0) return <div></div>;
   return (
     <Row
@@ -22,5 +22,5 @@ export default function RowContainer() {
   );
 }
 
-RowContainer.PropTypes = { article: React.PropTypes.object };
+RowContainer.propTypes = { article: React.PropTypes.object };
 RowContainer.defaultProps = { article: {} };

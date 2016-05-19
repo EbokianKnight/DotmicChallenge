@@ -2,29 +2,24 @@ import Dispatcher from '../dispatcher/dispatcher';
 import { Store } from 'flux/utils';
 import { ArticleActions } from '../actions/article_actions';
 import { loadJSON } from '../utils/api_util';
-// import { sortArticles } from '../utils/sort_articles';
+import sortArticles from '../utils/sort_articles';
+
 const ArticleStore = new Store(Dispatcher);
 
-let lastSortedBy = 'none';
+let lastSortedBy = window.sessionStorage.getItem('lastSortedBy') || 'none';
 let articleList = [];
 let shownArticles = [];
 let pageNumber = 0;
-let orderBy = 'up';
-let sorted = true;
+let orderBy = window.sessionStorage.getItem('orderBy') || 'up';
+let sorted = false;
+let moreResults = true;
 
 /*eslint-disable */
+console.log(window.sessionStorage.getItem('lastSortedBy'));
+console.log(window.sessionStorage.getItem('orderBy'));
+
 ArticleStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
-    case ArticleActions.AUTHORSORTED:
-      sorted = false;
-      if (lastSortedBy !== 'author') {
-        lastSortedBy = 'author';
-        orderBy = 'up';
-      } else {
-        toggleOrder();
-      }
-      ArticleStore.__emitChange();
-      break;
     case ArticleActions.DATESORTED:
       sorted = false;
       if (lastSortedBy !== 'date') {
@@ -50,8 +45,6 @@ ArticleStore.__onDispatch = (payload) => {
       if (lastSortedBy !== 'none') {
         lastSortedBy = 'none';
         orderBy = 'up';
-      } else {
-        toggleOrder();
       }
       ArticleStore.__emitChange();
       break;
@@ -66,14 +59,17 @@ ArticleStore.__onDispatch = (payload) => {
       ArticleStore.__emitChange();
       break;
   }
+  window.sessionStorage.setItem('lastSortedBy', lastSortedBy);
+  window.sessionStorage.setItem('orderBy', orderBy);
 };
-
+/*eslint-enable */
 
 function toggleOrder() {
   orderBy = orderBy === 'up' ? 'down' : 'up';
 }
 
 // this loads the next ten ads into shownArticles
+// the hard cap of 60 here should be generated dynamically based on backend info
 function showTenMoreArticles() {
   const total = articleList.length;
   const next = (10 * pageNumber);
@@ -86,12 +82,21 @@ function showTenMoreArticles() {
   } else if (total > 0 && total < 60) {
     loadJSON('../src/dbfaker/more-articles.json');
   }
+  if (shownArticles.length >= 60) {
+    moreResults = false;
+  }
 }
 
 // this loads all of the json into a storage variable
 function cacheArticles(articles) {
   articleList = articleList.concat(articles);
+  showTenMoreArticles();
 }
+
+// used to determine if the LoadMore button should be active
+ArticleStore.noMoreResults = function noMoreResults() {
+  return !moreResults;
+};
 
 // return the total number of shown articles
 ArticleStore.getTotal = function getTotal() {
@@ -110,12 +115,17 @@ ArticleStore.getOrder = function getOrder() {
 // if there are articles loaded, return a sorted version
 ArticleStore.provideArticles = function provideArticles() {
   if (sorted) return shownArticles;
-  // sorted = true;
-  // console.log(sortArticles);
-  // console.log(sortArticles(shownArticles, orderBy, lastSortedBy));
-  // return sortArticles(shownArticles, orderBy, lastSortedBy);
-  return shownArticles;
+  sorted = true;
+  let sortBy;
+  if (lastSortedBy === 'count') {
+    sortBy = 'words';
+  } else if (lastSortedBy === 'date') {
+    sortBy = 'publish_at';
+  } else {
+    sortBy = 'id';
+  }
+  sortBy = orderBy === 'up' ? '-'.concat(sortBy) : sortBy;
+  return sortArticles(shownArticles, sortBy);
 };
 
 export default ArticleStore;
-/*eslint-enable */
