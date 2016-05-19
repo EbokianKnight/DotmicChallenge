@@ -1,13 +1,27 @@
 ##.Mic Test
-This is the UI/UX developer competency test designed to gauge skill, attention to detail and affinity for standards based development.
+This is the UI/UX developer competency test designed to gauge skill,
+attention to detail and affinity for standards based development.
+
+###**Adam C Keller**
+<a href="mailto:adamcharleskeller@gmail.com">Email</a><br />
+<a href="https://github.com/EbokianKnight">GitHub</a><br />
+<a href="https://www.linkedin.com/in/adam-keller-6359a3b9">LinkedIn</a><br />
+<a href="http://ebokianknight.github.io/">Portfolio Site</a><br />
+
+###Launch Instructions
+* StepOne. Download and Navigate into the dotmic_challenge directory.
+* StepTwo. "npm install -g http-server" (if you don't have it already)
+* StepThree. "npm run start"
+* StepFour. <a href="http://localhost:8080/src/index.html">Click Here</a>
 
 ###Needs
-[ ] populate the page with data from articles.json
-[ ] paginate the query by tens
-[ ] provide a load more button to load another page
-[ ] if the original query is deleted, ajax another call to more-articles.json
-[ ] enable table sorting by **words** and **submitted** cols, cache settings
-[ ] provide a UI worth using whose display is clear and functional
+[x] populate the page with data from articles.json
+[x] paginate the query by tens
+[x] provide a load more button to load another page
+[x] if the original query is deleted, ajax another call to more-articles.json
+[x] enable table sorting by **words** and **submitted** cols, cache settings
+[x] provide a similar to provided UI that is clear and functional
+[x] enable local storage to store sorting variables during refresh.
 
 ###Component Map
 * Index.jsx to wrap the Main page
