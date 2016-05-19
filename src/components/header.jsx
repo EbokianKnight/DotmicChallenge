@@ -1,10 +1,6 @@
 import React from 'react';
 import ArticleStore from '../stores/article_store';
 
-/*eslint-disable */
-debugger;
-/*eslint-enable */
-
 import { sortByDate, sortByAuthor, sortByCount, sortByDefault }
   from '../actions/article_actions';
 
@@ -12,7 +8,9 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = { sortBy: 'none' };
-    this.setStateFromStore.bind(this);
+    this.setStateFromStore = () => {
+      this.setState({ sortBy: ArticleStore.sortedBy() });
+    };
   }
   componentDidMount() {
     this.storeToken = ArticleStore.addListener(this.setStateFromStore);
@@ -20,25 +18,23 @@ class Header extends React.Component {
   componentWillUnmount() {
     this.storeToken.remove();
   }
-  setStateFromStore() {
-    this.setState({ sortBy: ArticleStore.sortedBy() });
-  }
   render() {
     let count = 'sub-row header u-color-alt';
-    let author = 'sub-row header';
+    let author = 'sub-row header u-color-alt';
     let date = 'sub-row header u-color-alt';
+    const order = ArticleStore.getOrder();
     if (this.state.sortBy === 'count') {
-      count.append(' selected');
+      count = `sub-row header ${order}`;
     } else if (this.state.sortBy === 'author') {
-      author.append(' selected');
+      author = `sub-row header ${order}`;
     } else if (this.state.sortBy === 'date') {
-      date.append(' selected');
+      date = `sub-row header ${order}`;
     }
     return (
       <div>
         <header className="header-container">
           <div className="main-row" onClick={sortByDefault}>
-            <p>Unpublished Articles (ArticleStore.getTotal())</p>
+            <p>Unpublished Articles ({ArticleStore.getTotal()})</p>
           </div>
           <div className="sub-row-index">
             <button className={author} onClick={sortByAuthor}>

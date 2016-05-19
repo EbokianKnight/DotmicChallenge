@@ -6,8 +6,8 @@ $header-odd-underline: rgb(200,0,23);
 $header-txt: rgb(255,255,248);
 $row-bg: rgb(248,248,248);
 $row-drkbg: rgb(238,238,238);
-$row-text: rgb(0,86,126);
-$alt-row-text: black;
+$row-txt: rgb(0,86,126);
+$alt-row-txt: black;
 $row-border: rgb(230,230,230);
 $bootcamp: rgb(57,118,56);
 
@@ -76,6 +76,7 @@ body {
   @extend .total-row-size;
   color: $header-txt;
   font-weight: bold;
+  padding-left: 1em;
   cursor: pointer;
   text-transform: uppercase;
   border: 1px solid $header-bg-btm;
@@ -88,7 +89,7 @@ body {
 }
 .row-container {
   @extend .total-row-size;
-  color: $row-text;
+  color: $row-txt;
   border-left: 1px solid $row-border;
   border-right: 1px solid $row-border;
   border-top: 1px solid $row-border;
@@ -102,9 +103,11 @@ body {
 
 .main-row {
   @extend .flex-container;
+  justify-content: flex-start;
   height: $max-row-height;
   min-width: 350px;
   text-align: left;
+  flex-grow: 1;
 }
 .sub-row-index {
   @extend .flex-container;
@@ -121,6 +124,7 @@ body {
   flex-shrink: 0;
 }
 .header {
+  cursor: pointer;
   border-left: 1px solid $header-bg-btm;
 }
 .icon {
@@ -144,7 +148,7 @@ body {
   padding-right: 1em;
 }
 .u-color-alt {
-  color: $alt-row-text !important;
+  color: $alt-row-txt !important;
 }
 .footer-container {
   @extend .container-size;
@@ -152,4 +156,24 @@ body {
   background: $row-bg;
   border: 1px solid $row-border;
   padding: 1em;
+}
+
+.up:after {
+  content: '';
+  left: 46%;
+  bottom: 10px;
+  position: absolute;
+  border-top: 10px solid $header-txt;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+}
+
+.down:after {
+  content: '';
+  left: 46%;
+  bottom: 10px;
+  position: absolute;
+  border-bottom: 10px solid $header-txt;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
 }

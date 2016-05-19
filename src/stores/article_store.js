@@ -102,6 +102,11 @@ ArticleStore.sortedBy = function sortedBy() {
   return lastSortedBy;
 };
 
+ArticleStore.getOrder = function getOrder() {
+  return orderBy;
+};
+
+
 // if there are articles loaded, return a sorted version
 ArticleStore.provideArticles = function provideArticles() {
   if (sorted) return shownArticles;

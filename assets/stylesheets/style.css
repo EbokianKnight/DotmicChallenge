@@ -42,6 +42,7 @@ body {
 .header-container {
   color: #fffff8;
   font-weight: bold;
+  padding-left: 1em;
   cursor: pointer;
   text-transform: uppercase;
   border: 1px solid #8c1331;
@@ -70,9 +71,11 @@ body {
   background: #f8f8f8; }
 
 .main-row {
+  justify-content: flex-start;
   height: 5rem;
   min-width: 350px;
-  text-align: left; }
+  text-align: left;
+  flex-grow: 1; }
 
 .sub-row {
   border-left: 1px solid #e6e6e6;
@@ -85,6 +88,7 @@ body {
   flex-shrink: 0; }
 
 .header {
+  cursor: pointer;
   border-left: 1px solid #8c1331; }
 
 .icon {
@@ -114,5 +118,23 @@ body {
   background: #f8f8f8;
   border: 1px solid #e6e6e6;
   padding: 1em; }
+
+.up:after {
+  content: '';
+  left: 46%;
+  bottom: 10px;
+  position: absolute;
+  border-top: 10px solid #fffff8;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent; }
+
+.down:after {
+  content: '';
+  left: 46%;
+  bottom: 10px;
+  position: absolute;
+  border-bottom: 10px solid #fffff8;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent; }
 
 /*# sourceMappingURL=style.css.map */

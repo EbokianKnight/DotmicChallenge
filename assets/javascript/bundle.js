@@ -29796,10 +29796,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/*eslint-disable */
-	debugger;
-	/*eslint-enable */
-	
 	var Header = function (_React$Component) {
 	  (0, _inherits3.default)(Header, _React$Component);
 	
@@ -29809,7 +29805,9 @@
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Header).call(this, props));
 	
 	    _this.state = { sortBy: 'none' };
-	    _this.setStateFromStore.bind(_this);
+	    _this.setStateFromStore = function () {
+	      _this.setState({ sortBy: _article_store2.default.sortedBy() });
+	    };
 	    return _this;
 	  }
 	
@@ -29824,22 +29822,18 @@
 	      this.storeToken.remove();
 	    }
 	  }, {
-	    key: 'setStateFromStore',
-	    value: function setStateFromStore() {
-	      this.setState({ sortBy: _article_store2.default.sortedBy() });
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var count = 'sub-row header u-color-alt';
-	      var author = 'sub-row header';
+	      var author = 'sub-row header u-color-alt';
 	      var date = 'sub-row header u-color-alt';
+	      var order = _article_store2.default.getOrder();
 	      if (this.state.sortBy === 'count') {
-	        count.append(' selected');
+	        count = 'sub-row header ' + order;
 	      } else if (this.state.sortBy === 'author') {
-	        author.append(' selected');
+	        author = 'sub-row header ' + order;
 	      } else if (this.state.sortBy === 'date') {
-	        date.append(' selected');
+	        date = 'sub-row header ' + order;
 	      }
 	      return _react2.default.createElement(
 	        'div',
@@ -29853,7 +29847,9 @@
 	            _react2.default.createElement(
 	              'p',
 	              null,
-	              'Unpublished Articles (ArticleStore.getTotal())'
+	              'Unpublished Articles (',
+	              _article_store2.default.getTotal(),
+	              ')'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -30009,6 +30005,10 @@
 	// this shows the last filter that was applied to the list
 	ArticleStore.sortedBy = function sortedBy() {
 	  return lastSortedBy;
+	};
+	
+	ArticleStore.getOrder = function getOrder() {
+	  return orderBy;
 	};
 	
 	// if there are articles loaded, return a sorted version
